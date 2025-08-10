@@ -1,0 +1,10 @@
+{
+    "C_Cpp.errorSquiggles": "enabled",
+    "files.associations": {
+        "unistd.h": "c",
+        "stddef.h": "c",
+        "libft.h": "c",
+        "stdlib.h": "c",
+        "stdio.h": "c"
+    }
+}
