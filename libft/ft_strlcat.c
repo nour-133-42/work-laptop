@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 20:49:06 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/08/10 06:02:09 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/08/13 23:20:18 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,44 +14,42 @@
 
 #include "libft.h"
 
-// int	ft_strlen(const char *s)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (s[i])
-// 	{
-// 		i++;
-// 	}
-// 	return (i);
-// }
-
 size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
 	unsigned int	i;
 	unsigned int	n;
+	unsigned int	j;
 
 	n = 0;
 	i = 0;
+	j = 0;
 	if (size < ft_strlen(dst))
 		n = ft_strlen(src) + size;
 	else
 		n = ft_strlen(dst) + ft_strlen(src);
-	while (*dst)
-	{
-		dst++;
+	while (dst[i])
 		i++;
-	}
-	while (i < size && *src)
+	if (size != 0)
 	{
-		*dst = *src;
-		dst++;
-		src++;
-		i++;
+		while (i < size - 1 && src[j])
+		{
+			dst[i] = src[j];
+			i++;
+			j++;
+		}
+		dst[i] = '\0';
 	}
-	*dst = '\0';
 	return (n);
 }
+
+/*#include <bsd/string.h>
+int main()
+{
+	char *s = "hhhhhhhhhhh";
+	char *c = "llllllllllllllll";
+	int x = ft_strlcat(s,c,-1);
+	printf("%d",x);
+}*/
 
 // #include <stdio.h>
 // #include <string.h>

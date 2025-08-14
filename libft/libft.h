@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:32:59 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/08/10 08:24:47 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/08/14 06:48:14 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
 # include <unistd.h>
 
 int		ft_atoi(const char *nptr);

@@ -6,75 +6,93 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 22:30:12 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/08/10 09:03:26 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/08/13 22:39:30 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //#include <stdlib.h>
 #include "libft.h"
 
-// size_t	ft_strlen(const char *s)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (s[i])
-// 	{
-// 		i++;
-// 	}
-// 	return (i);
-// }
-
-static void	reverse_array(char *arr)
+static char	*reverse_array(char *r)
 {
-	int	temp;
-	int	i;
+	int		i;
+	int		j;
+	char	temp;
+
+	if (r[0])
+	{
+		i = 0;
+		j = ft_strlen(r) - 1;
+		while (i < j)
+		{
+			temp = r[i];
+			r[i] = r[j];
+			r[j] = temp;
+			i++;
+			j--;
+		}
+		return (r);
+	}
+	else
+		return ("0");
+}
+
+int	count_num(int n)
+{
+	int		i;
+	long	e;
 
 	i = 0;
-	while (i < (int)ft_strlen(arr) / 2)
+	e = n;
+	if (e <= 0)
 	{
-		temp = arr[i];
-		arr[i] = arr[ft_strlen(arr) - 1 - i];
-		arr[ft_strlen(arr) - 1 - i] = temp;
 		i++;
+		e = -e;
 	}
+	while (e)
+	{
+		i++;
+		e /= 10;
+	}
+	return (i);
 }
 
 char	*ft_itoa(int n)
 {
 	char	*p;
 	int		i;
-	int		j;
+	long	e;
 
+	e = n;
 	i = 0;
-	j = 0;
-	p = malloc(15);
+	p = malloc(count_num(e) + 1);
 	if (!p)
 		return (NULL);
-	if (n == -2147483648)
-		return ("-2147483648");
-	if (n < 0)
+	if (e < 0)
 	{
 		p[i++] = '-';
-		n *= -1;
+		e *= -1;
 	}
-	while (n >= 10)
+	if (e == 0)
+		p[i++] = '0';
+	while (e > 0)
 	{
-		p[i++] = n % 10 + '0';
-		n = n / 10;
+		p[i++] = e % 10 + '0';
+		e = e / 10;
 	}
-	p[i++] = n + '0';
-	reverse_array(p + 1);
 	p[i] = '\0';
-	return (p);
+	if (p[0] == '-')
+		return (reverse_array(p + 1) - 1);
+	return (reverse_array(p));
 }
-
+//-2345
+//-5432 2345 - 1
 // #include <stdio.h>
 
 // int	main(void)
 // {
 // 	int	e;
 
-// 	e = -2147;
-// 	printf("%s\n", ft_itoa(e));
+// 	e = 0;
+// 	printf("%s\n", ft_itoa(7483648));
 // }

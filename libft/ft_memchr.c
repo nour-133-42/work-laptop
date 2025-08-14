@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 17:09:35 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/08/10 08:24:35 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/08/14 02:10:30 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	*ft_memchr(const void *s, int c, size_t n)
 {
-	int			i;
-	const char	*e;
+	int					i;
+	const unsigned char	*e;
 
 	e = s;
 	i = 0;
-	while (e[i] && n--)
+	while (n--)
 	{
-		if (e[i] == c)
+		if (e[i] == (unsigned char)c)
 		{
 			return ((char *)e + i);
 		}
@@ -30,11 +30,15 @@ void	*ft_memchr(const void *s, int c, size_t n)
 	return (NULL);
 }
 
-// #include <stdio.h>
-// #include <unistd.h>
-
 // int	main(void)
 // {
-// 	char *i = memchr("2454353", '5', 3);
-// 	printf("%s", i);
+// 	int i;
+// 	i = 0;
+// 	// char	c[] = "orem ipsum dolor sit a";
+// 	// char	e[] = "4iofjfosdsfeqrfsdfaefsdafew";
+// 	// char e[] = "eaammi";
+// 	printf("%s", (char *)ft_memchr("", -1, -1));
+// 	// write(1, "\n", 1);
+// 	printf("%s", (char *)memchr("", -1, -1));
+// 	return (0);
 // }

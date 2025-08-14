@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 11:37:20 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/08/10 05:47:20 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/08/14 06:36:59 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 
 	p = src;
 	e = dest;
+	if (!ft_strlen(dest) && !ft_strlen(src) && (int)n < 0)
+		return ("");
 	while (n--)
 	{
 		*e = *p;
@@ -29,19 +31,12 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	return (dest);
 }
 
-// #include <stdio.h>
-// #include <unistd.h>
-
 // int	main(void)
 // {
-// 	char c[] = "hello";
-// 	char e[] = "eaamm";
-
-// 	ft_memcpy(e,c, 5);
-// 	for (int i = 0; i < 5; i++)
-// 	{
-// 		printf("Element at index %c: %c\n", i, e[i]);
-// 	}
-// 	// printf("%*d",ft_memset(c,4,5));
+// 	// char	c[] = "orem ipsum dolor sit a";
+// 	// char	e[] = "4iofjfosdsfeqrfsdfaefsdafew";
+// 	// char e[] = "eaammi";
+// 	printf("%s", (char *)ft_memcpy("", "", -10));
+// 	printf("%s", (char *)memcpy("", "", -10));
 // 	return (0);
 // }

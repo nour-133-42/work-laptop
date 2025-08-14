@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 01:50:21 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/08/10 06:29:37 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/08/13 23:10:02 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char *))
 {
 	int	i;
 
+	if (!s || !f)
+		return ;
 	i = 0;
 	while (s[i])
 	{
@@ -23,3 +25,10 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char *))
 		i++;
 	}
 }
+
+/*int main()
+{
+char *s = "hhhh";
+	ft_striteri(s,NULL);
+	printf("%s",s);
+}*/

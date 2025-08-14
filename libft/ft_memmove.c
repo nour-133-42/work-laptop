@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:04:53 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/08/10 05:47:59 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/08/14 06:44:18 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,15 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 	unsigned char		*e;
 	size_t				i;
 
-	if ((dest == NULL && src == NULL) || n == 0)
-		return (NULL);
 	i = 0;
 	p = src;
 	e = dest;
+	if (!ft_strlen(dest) && !ft_strlen(src))
+		return ("");
 	if (e > p)
 	{
 		while (n--)
-		{
 			e[n] = p[n];
-		}
 	}
 	else
 	{
@@ -47,14 +45,10 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 
 // int	main(void)
 // {
-// 	char c[] = "hello";
-// 	//char e[] = "eaammi";
-
-// 	ft_memmove(c - 3,c, 5);
-// 	for (int i = 0; i < 5; i++)
-// 	{
-// 		printf("Element at index %c: %c\n", i, c[i]);
-// 	}
-// 	// printf("%*d",ft_memset(c,4,5));
+// 	// char	c[] = "orem ipsum dolor sit a";
+// 	// char	e[] = "4iofjfosdsfeqrfsdfaefsdafew";
+// 	// char e[] = "eaammi";
+// 	printf("%s", (char *)ft_memmove("", "", -10));
+// 	printf("%s", (char *)ft_memmove("", "", -10));
 // 	return (0);
 // }

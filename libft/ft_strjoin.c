@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 18:25:54 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/08/10 09:07:23 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/08/12 20:21:20 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,30 +30,31 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	i;
 
 	i = 0;
-	p = malloc(ft_strlen(s1) + ft_strlen(s2));
-	if (!p)
+	p = malloc((ft_strlen(s1) + ft_strlen(s2)) + 1);
+	if (!p || !s1 || !s2)
 		return (NULL);
-	while (i < ft_strlen(s1))
+	while (i < ft_strlen(s1) && s1[i])
 	{
 		p[i] = s1[i];
 		i++;
 	}
 	i = 0;
-	while (i < ft_strlen(s2))
+	while (i < ft_strlen(s2) && s2[i])
 	{
 		p[i + ft_strlen(s1)] = s2[i];
 		i++;
 	}
-	return (p - ft_strlen(s1) + ft_strlen(s2) - 1);
+	p[i + ft_strlen(s1)] = '\0';
+	return (p);
 }
 
-#include <stdio.h>
-#include <unistd.h>
+// #include <stdio.h>
+// #include <unistd.h>
 
-int	main(void)
-{
-	char	*i;
+// int	main(void)
+// {
+// 	char	*i;
 
-	i = ft_strjoin("hello", " world");
-	printf("%s", i);
-}
+// 	i = ft_strjoin("hello", " world");
+// 	printf("%s", i);
+// }

@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 05:28:07 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/08/10 08:44:26 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/08/11 20:14:44 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	ft_atoi(const char *nptr)
 		s *= -1;
 		nptr++;
 	}
+	else if (*nptr == '+')
+		nptr++;
 	while (*nptr)
 	{
 		if (*nptr >= '0' && *nptr <= '9')
@@ -42,7 +44,7 @@ int	ft_atoi(const char *nptr)
 
 // int	main(void)
 // {
-// 	char c[] = "42";
+// 	char c[] = "+548";
 // 	printf("%d\n", ft_atoi(c));
 // 	printf("%d", atoi(c));
 // }

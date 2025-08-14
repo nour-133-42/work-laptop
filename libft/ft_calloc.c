@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 11:20:29 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/08/10 05:43:36 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/08/13 22:29:48 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,18 @@
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
-	size_t	*p;
-	size_t	i;
+	unsigned char	*p;
+	size_t			i;
 
-	if (size == 0 || nmemb == 0)
+	if (size == 0 && nmemb == 0)
 	{
-		return (NULL);
+		p = malloc(nmemb * size);
+		return (p);
 	}
 	p = malloc(nmemb * size);
 	i = 0;
 	if (!p)
-	{
 		return (NULL);
-	}
 	while (i < nmemb * size)
 	{
 		p[i] = 0;
@@ -35,3 +34,13 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	}
 	return ((void *)p);
 }
+/*int	main(void)
+{
+	//void *str = ft_calloc(0, 0);
+
+	//if (str == ((void *)0))
+	//	printf("nooooo");
+	//free(str);
+	char *str = malloc(3); 
+	printf("%c,%c,%c",str[0],str[1],str[2]);
+}*/

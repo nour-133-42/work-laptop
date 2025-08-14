@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:54:25 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/08/10 05:13:47 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/08/13 22:59:24 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,29 @@
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*p;
-	size_t	i;
 
-	p = malloc(len);
-	i = 0;
+	if (!s)
+		return (NULL);
+	if (start >= ft_strlen(s))
+		return (ft_strdup(""));
+	if (len > ft_strlen(s) - start)
+		len = ft_strlen(s) - start;
+	p = malloc(len + 1);
 	if (!p)
 		return (NULL);
-	while (i < len)
-	{
-		p[i] = s[i + start];
-		i++;
-	}
-	return ((char *)p);
+	ft_memcpy(p, s + start, len);
+	p[len] = '\0';
+	return (p);
 }
 
-// #include <stdio.h>
-// #include <unistd.h>
+/*#include <stdio.h>
+#include <unistd.h>
 
-// int	main(void)
-// {
-// 	char	*i;
+int	main(void)
+{
+	char	*i;
 
-// 	i = ft_substr("2454353", 3, 6);
-// 	printf("%s", i);
-// }
+	i = ft_substr("tripouille", 1, 1077777777);
+	printf("%s", i);
+	free(i);
+}*/

@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 17:40:01 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/08/10 02:06:17 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/08/14 02:00:21 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,27 @@ int	ft_memcmp(const void *s1, const void *s2, size_t n)
 	int					i;
 
 	i = 0;
-	while (p[i] && n)
+	while (n)
 	{
 		if (p[i] != e[i])
 		{
-			break ;
+			return ((unsigned char)p[i] - (unsigned char)e[i]);
 		}
-		s1++;
-		s2++;
 		n--;
+		i++;
 	}
-	if (!n)
-		return (0);
-	else
-		return (*p - *e);
+	return (0);
 }
-
-// #include <stdio.h>
-// #include <unistd.h>
 
 // int	main(void)
 // {
-// 	int i = ft_memcmp("2454353", "5", 1);
-// 	printf("%d", i);
+// 	int i;
+// 	i = 0;
+// 	// char	c[] = "orem ipsum dolor sit a";
+// 	// char	e[] = "4iofjfosdsfeqrfsdfaefsdafew";
+// 	// char e[] = "eaammi";
+// 	printf("%d", ft_memcmp("", "", 10));
+// 	// write(1, "\n", 1);
+// 	printf("%d", memcmp("", "", 10));
+// 	return (0);
 // }

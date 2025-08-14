@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 16:23:06 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/08/05 17:38:09 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/08/11 18:42:30 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	if (!n)
 		return (0);
 	else
-		return (*s1 - *s2);
+		return ((unsigned char)*s1 - (unsigned char)*s2);
 }
 
 // #include <stdio.h>
