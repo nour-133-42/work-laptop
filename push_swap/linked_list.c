@@ -6,13 +6,13 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 15:22:25 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/10/20 16:00:09 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/12/02 16:17:56 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-t_list	*ft_lstnew(void *data)
+t_list	*ft_lstnew(long data)
 {
 	t_list	*node;
 
@@ -43,8 +43,8 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 
 int	ft_atoi(const char *nptr)
 {
-	int	r;
-	int	s;
+	long	r;
+	int		s;
 
 	s = 1;
 	r = 0;

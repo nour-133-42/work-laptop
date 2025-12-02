@@ -1,8 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/01 19:42:05 by nalshmai          #+#    #+#             */
+/*   Updated: 2025/12/02 16:01:34 by nalshmai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 typedef struct s_list
 {
-	void			*content;
+	long			content;
 	struct s_list	*next;
 	struct s_list	*target;
 	int				to_top_cost;
@@ -12,14 +26,15 @@ typedef struct s_list
 	int				chepest_rotation;
 }					t_list;
 
-t_list				*ft_lstnew(void *data);
+t_list				*ft_lstnew(long data);
 void				ft_lstadd_back(t_list **lst, t_list *new);
 void				swap_last_two(t_list **lst);
 void				push_last_to_last(t_list **lst1, t_list **lst2);
 void				rotate_list(t_list **lst);
+void				reverse_rotate_list(t_list **lst);
 t_list				*fill_list(int argc, char *argv[]);
 void				ft_lstadd_front(t_list **lst, t_list *new);
-int					if_sorted_1(t_list *lst);
+// int					if_sorted_1(t_list *lst);
 t_list				*find_min(t_list *lst);
 t_list				*find_max(t_list *lst);
 void				assien_the_target_node(t_list **current_a,
@@ -43,3 +58,4 @@ int					ss(t_list **lst1, t_list **lst2);
 int					preform_different_rotation(t_list **a, t_list **b,
 						t_list *chepestnode);
 int					execute_operations(t_list **a, t_list **b);
+int					if_sorted_2(t_list *a);
