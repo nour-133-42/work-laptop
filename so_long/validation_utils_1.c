@@ -6,28 +6,54 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:33:32 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/15 21:04:19 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/12/22 20:51:16 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	map_rectangle(char **map_array)
-{
-	int	i;
-	int	j;
-	int	t;
+#include "so_long.h"
 
-	t = 0;
-	while (map_array[0][t])
-		t++;
-	while (map_array[i])
+static int	check_lines_length(int fd, int length)
+{
+	char	*line;
+	int		current_length;
+
+	line = get_next_line(fd);
+	while (line)
 	{
-		j = 0;
-		while (map_array[i][j])
-			j++;
-		if (j != t)
+		current_length = ft_strlen(line);
+		// if (current_length > 0 && line[current_length - 1] == '\n')
+		// 	current_length--;
+		if (current_length != length)
+		{
+			free(line);
 			return (1);
-		i++;
+		}
+		free(line);
+		line = get_next_line(fd);
 	}
+	free(line);
+	return (0);
+}
+
+int	map_rectangle(char *path)
+{
+	int	fd;
+	int	length;
+
+	length = line_length(path);
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+	{
+		write(2, "Error\nCould not open file\n", 27);
+		return (1);
+	}
+	if (check_lines_length(fd, length) == 1)
+	{
+		close(fd);
+		write(2, "Error\nMap is not rectangular\n", 29);
+		return (1);
+	}
+	close(fd);
 	return (0);
 }
 

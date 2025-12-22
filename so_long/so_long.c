@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   so_long.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 15:14:49 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/15 21:13:22 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/12/22 20:49:21 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,36 @@
 
 int	validate_map(char **map_array)
 {
-	if (map_rectangle(map_array) || map_walls(map_array)
-		|| map_elements(map_array))
+	if (map_walls(map_array) || map_elements(map_array))
 	{
 		return (1);
 	}
 	return (0);
+}
+
+int	get_map_height(char *path)
+{
+	int		fd;
+	char	*line;
+	int		height;
+
+	height = 0;
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+	{
+		write(2, "Error\nCould not open file\n", 27);
+		return (0);
+	}
+	line = get_next_line(fd);
+	while (line)
+	{
+		height++;
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
+	free(line);
+	return (height);
 }
 
 char	**readmap(char *path)
@@ -29,7 +53,7 @@ char	**readmap(char *path)
 	int		i;
 	int		fd;
 
-	result = NULL;
+	result = malloc(sizeof(char *) * (get_map_height(path) + 1));
 	i = 0;
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
@@ -80,7 +104,7 @@ int	main(int argc, char *argv[])
 {
 	t_MapData	*map_data;
 
-	if (validate_path(argc, argv))
+	if (validate_path(argc, argv) || map_rectangle(argv[1]))
 		return (0);
 	map_data->map_array = readmap(argv[1]);
 	if (validate_map(map_data->map_array) || !map_data->map_array)

@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 17:37:55 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/15 17:46:26 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/12/22 20:49:49 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,3 +24,9 @@ typedef struct s_MapData
 	int		collectible_count;
 	char	**map_array;
 }			t_MapData;
+
+int			line_length(char *path);
+int			map_rectangle(char **map_array);
+int			map_walls(char **map_array);
+int			map_elements(char **map_array);
+int			get_map_height(char *path);
