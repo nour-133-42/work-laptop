@@ -6,13 +6,28 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:33:32 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/22 20:51:16 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/12/24 17:55:30 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static int	check_lines_length(int fd, int length)
+int	flood_fill(char **map_array, int x, int y, int *collectible_count)
+{
+	if (map_array[y][x] == '1' || map_array[y][x] == 'E'
+		|| map_array[y][x] == 'V')
+		return (0);
+	if (map_array[y][x] == 'C')
+		(*collectible_count)--;
+	map_array[y][x] = 'V';
+	flood_fill(map_array, x + 1, y, collectible_count);
+	flood_fill(map_array, x - 1, y, collectible_count);
+	flood_fill(map_array, x, y + 1, collectible_count);
+	flood_fill(map_array, x, y - 1, collectible_count);
+	return (1);
+}
+
+static int	check_lines_length(int fd, int length, int hight)
 {
 	char	*line;
 	int		current_length;
@@ -21,9 +36,9 @@ static int	check_lines_length(int fd, int length)
 	while (line)
 	{
 		current_length = ft_strlen(line);
-		// if (current_length > 0 && line[current_length - 1] == '\n')
-		// 	current_length--;
-		if (current_length != length)
+		if (current_length > 0 && line[current_length - 1] == '\n')
+			current_length--;
+		if (current_length != length && --hight <= 0)
 		{
 			free(line);
 			return (1);
@@ -47,7 +62,7 @@ int	map_rectangle(char *path)
 		write(2, "Error\nCould not open file\n", 27);
 		return (1);
 	}
-	if (check_lines_length(fd, length) == 1)
+	if (check_lines_length(fd, length, get_map_height(path)) == 1)
 	{
 		close(fd);
 		write(2, "Error\nMap is not rectangular\n", 29);
@@ -68,9 +83,9 @@ int	map_walls(char **map_array)
 	j = -1;
 	rows = 0;
 	cols = 0;
-	while (map_array[rows][0])
+	while (map_array[rows])
 		rows++;
-	while (map_array[0][cols])
+	while (map_array[cols])
 		cols++;
 	while (map_array[0][++j])
 	{

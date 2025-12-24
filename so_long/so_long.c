@@ -6,15 +6,27 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 15:14:49 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/22 20:49:21 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/12/24 18:12:12 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	validate_map(char **map_array)
+int	validate_map(t_MapData **map_data)
 {
-	if (map_walls(map_array) || map_elements(map_array))
+	char	**map_data_array;
+	int		x;
+	int		y;
+	int		collectible_count;
+
+	if (!find_player_position((*map_data)->map_array, &x, &y))
+		return (1);
+	map_data_array = (*map_data)->map_array;
+	(*map_data)->collectible_count = count_collectibles(map_data_array);
+	collectible_count = (*map_data)->collectible_count;
+	if (map_walls(map_data_array) || map_elements(map_data_array)
+		|| flood_fill(map_data_array, x, y, collectible_count)
+		|| collectible_count != 0)
 	{
 		return (1);
 	}
@@ -53,7 +65,7 @@ char	**readmap(char *path)
 	int		i;
 	int		fd;
 
-	result = malloc(sizeof(char *) * (get_map_height(path) + 1));
+	result = malloc(sizeof(char **) * (get_map_height(path) + 1));
 	i = 0;
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
@@ -65,7 +77,6 @@ char	**readmap(char *path)
 	while (line)
 	{
 		result[i++] = line;
-		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
@@ -82,6 +93,7 @@ int	validate_path(int argc, char *argv[])
 		write(2, "Error\nInvalid number of arguments\n", 35);
 		return (1);
 	}
+	i = 0;
 	while (argv[1][i])
 	{
 		if (argv[1][i] == '.')
@@ -104,10 +116,11 @@ int	main(int argc, char *argv[])
 {
 	t_MapData	*map_data;
 
+	map_data = malloc(sizeof(t_MapData));
 	if (validate_path(argc, argv) || map_rectangle(argv[1]))
 		return (0);
 	map_data->map_array = readmap(argv[1]);
-	if (validate_map(map_data->map_array) || !map_data->map_array)
+	if (validate_map(&map_data) || !map_data->map_array)
 	{
 		write(2, "Error\nInvalid map\n", 19);
 		return (0);
