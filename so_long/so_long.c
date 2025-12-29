@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 15:14:49 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/24 18:12:12 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/12/29 16:24:05 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,15 @@ int	validate_map(t_MapData **map_data)
 	(*map_data)->collectible_count = count_collectibles(map_data_array);
 	collectible_count = (*map_data)->collectible_count;
 	if (map_walls(map_data_array) || map_elements(map_data_array))
+		return (1);
+	flood_fill(map_data_array, x, y, &collectible_count);
+	if (/*collectible_count != ||*/ !check_after_fill(map_data_array))
 	{
+		write(2, "Error\nthar is no valid path to Exit", 36);
 		return (1);
 	}
-	flood_fill(map_data_array, x, y, &collectible_count);
-	if(/*collectible_count != ||*/check_after_fill(map_data_array))
-	{
-		write(2,"Error\nthar is no valid path to Exit",36);
-		return(1);
-	}
-
 	return (0);
 }
-
-
 
 int	get_map_height(char *path)
 {
@@ -86,6 +81,7 @@ char	**readmap(char *path)
 		result[i++] = line;
 		line = get_next_line(fd);
 	}
+	result[i] = NULL;
 	close(fd);
 	free(line);
 	return (result);
@@ -105,10 +101,8 @@ int	validate_path(int argc, char *argv[], t_MapData **mapdata)
 	{
 		if (argv[1][i] == '.')
 		{
-			if (argv[1][i + 1] == 'b' && argv[1][i + 2] == 'e' && argv[1][i
-				+ 3] == 'r' && argv[1][i + 4] == '\0')
-				return (0);
-			else
+			if (argv[1][i + 1] != 'b' || argv[1][i + 2] != 'e' || argv[1][i
+				+ 3] != 'r' || argv[1][i + 4] != '\0')
 			{
 				write(2, "Error\nInvalid file extension\n", 30);
 				return (1);
@@ -128,7 +122,7 @@ int	main(int argc, char *argv[])
 	if (validate_path(argc, argv, &map_data) || map_rectangle(argv[1]))
 		return (0);
 	map_data->map_array = readmap(argv[1]);
-	if (validate_map(&map_data) || !map_data->map_array)
+	if (!map_data->map_array || validate_map(&map_data) )
 	{
 		write(2, "Error\nInvalid map\n", 19);
 		return (0);

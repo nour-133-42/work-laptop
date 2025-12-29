@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:33:32 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/24 17:55:30 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/12/29 15:59:21 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ static int	check_lines_length(int fd, int length, int hight)
 	while (line)
 	{
 		current_length = ft_strlen(line);
-		if (current_length > 0 && line[current_length - 1] == '\n')
-			current_length--;
-		if (current_length != length && --hight <= 0)
+		if (current_length > 0 && line[current_length - 1] != '\n')
+			current_length++;
+		if (current_length != length || --hight < 0)
 		{
 			free(line);
 			return (1);
@@ -79,26 +79,31 @@ int	map_walls(char **map_array)
 	int	rows;
 	int	cols;
 
-	i = -1;
-	j = -1;
+	i = 0;
+	j = 0;
 	rows = 0;
 	cols = 0;
 	while (map_array[rows])
 		rows++;
-	while (map_array[cols])
+	while (map_array[0][cols])
 		cols++;
-	while (map_array[0][++j])
+	while (j < cols - 1)
 	{
-		if (map_array[0][j] != '1' || map_array[rows - 1][j] != '1')
+		if (map_array[0][j] != '1'
+			|| map_array[rows - 1][j] != '1')
 			return (1);
+		j++;
 	}
-	while (map_array[++i][0])
+	while (i < rows)
 	{
-		if (map_array[i][0] != '1' || map_array[i][cols - 1] != '1')
+		if (map_array[i][0] != '1'
+			|| map_array[i][cols - 2] != '1')
 			return (1);
+		i++;
 	}
 	return (0);
 }
+
 
 int	map_elements(char **map_array)
 {
