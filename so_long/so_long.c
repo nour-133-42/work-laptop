@@ -21,17 +21,24 @@ int	validate_map(t_MapData **map_data)
 
 	if (!find_player_position((*map_data)->map_array, &x, &y))
 		return (1);
-	map_data_array = (*map_data)->map_array;
+	map_data_array = copy_map(map_data);
 	(*map_data)->collectible_count = count_collectibles(map_data_array);
 	collectible_count = (*map_data)->collectible_count;
-	if (map_walls(map_data_array) || map_elements(map_data_array)
-		|| flood_fill(map_data_array, x, y, collectible_count)
-		|| collectible_count != 0)
+	if (map_walls(map_data_array) || map_elements(map_data_array))
 	{
 		return (1);
 	}
+	flood_fill(map_data_array, x, y, &collectible_count);
+	if(/*collectible_count != ||*/check_after_fill(map_data_array))
+	{
+		write(2,"Error\nthar is no valid path to Exit",36);
+		return(1);
+	}
+
 	return (0);
 }
+
+
 
 int	get_map_height(char *path)
 {
@@ -84,7 +91,7 @@ char	**readmap(char *path)
 	return (result);
 }
 
-int	validate_path(int argc, char *argv[])
+int	validate_path(int argc, char *argv[], t_MapData **mapdata)
 {
 	int	i;
 
@@ -109,6 +116,7 @@ int	validate_path(int argc, char *argv[])
 		}
 		i++;
 	}
+	(*mapdata)->path = argv[1];
 	return (0);
 }
 
@@ -117,7 +125,7 @@ int	main(int argc, char *argv[])
 	t_MapData	*map_data;
 
 	map_data = malloc(sizeof(t_MapData));
-	if (validate_path(argc, argv) || map_rectangle(argv[1]))
+	if (validate_path(argc, argv, &map_data) || map_rectangle(argv[1]))
 		return (0);
 	map_data->map_array = readmap(argv[1]);
 	if (validate_map(&map_data) || !map_data->map_array)

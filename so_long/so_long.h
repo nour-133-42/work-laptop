@@ -23,6 +23,7 @@ typedef struct s_MapData
 	int		exit_count;
 	int		collectible_count;
 	char	**map_array;
+	char	*path;
 }			t_MapData;
 
 int			line_length(char *path);
@@ -35,3 +36,6 @@ int			find_player_position(char **map_array, int *player_x,
 int			flood_fill(char **map_array, int x, int y, int *collectible_count);
 char		**readmap(char *path);
 int			count_collectibles(char **map_array);
+char    **copy_map(t_MapData **map_data);
+int check_after_fill(char **map);
+
