@@ -66,8 +66,8 @@ static char	*return_the_line(char *s)
 	count = 0;
 	while (s[count] && s[count] != '\n')
 		count++;
-	if (s[count] == '\n')
-		count++;
+	// if (s[count] == '\n')
+	// 	count++;
 	res = malloc(count + 1);
 	if (!res)
 		return (NULL);

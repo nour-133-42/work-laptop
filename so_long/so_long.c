@@ -12,6 +12,33 @@
 
 #include "so_long.h"
 
+char	**readmap(char *path)
+{
+	char	*line;
+	char	**result;
+	int		i;
+	int		fd;
+
+	result = malloc(sizeof(char **) * (get_map_height(path) + 1));
+	i = 0;
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+	{
+		write(2, "Error\nCould not open file\n", 27);
+		return (NULL);
+	}
+	line = get_next_line(fd);
+	while (line && ft_strlen(line))
+	{
+		result[i++] = line;
+		line = get_next_line(fd);
+	}
+	result[i] = NULL;
+	close(fd);
+	free(line);
+	return (result);
+}
+
 int	validate_map(t_MapData **map_data)
 {
 	char	**map_data_array;
@@ -40,16 +67,13 @@ int	get_map_height(char *path)
 	int		fd;
 	char	*line;
 	int		height;
+	int		line_len;
 
 	height = 0;
 	fd = open(path, O_RDONLY);
-	if (fd < 0)
-	{
-		write(2, "Error\nCould not open file\n", 27);
-		return (0);
-	}
 	line = get_next_line(fd);
-	while (line)
+	line_len = ft_strlen(line);
+	while (line && line_len)
 	{
 		height++;
 		free(line);
@@ -58,33 +82,6 @@ int	get_map_height(char *path)
 	close(fd);
 	free(line);
 	return (height);
-}
-
-char	**readmap(char *path)
-{
-	char	*line;
-	char	**result;
-	int		i;
-	int		fd;
-
-	result = malloc(sizeof(char **) * (get_map_height(path) + 1));
-	i = 0;
-	fd = open(path, O_RDONLY);
-	if (fd < 0)
-	{
-		write(2, "Error\nCould not open file\n", 27);
-		return (NULL);
-	}
-	line = get_next_line(fd);
-	while (line)
-	{
-		result[i++] = line;
-		line = get_next_line(fd);
-	}
-	result[i] = NULL;
-	close(fd);
-	free(line);
-	return (result);
 }
 
 int	validate_path(int argc, char *argv[], t_MapData **mapdata)
@@ -119,7 +116,7 @@ int	main(int argc, char *argv[])
 	t_MapData	*map_data;
 
 	map_data = malloc(sizeof(t_MapData));
-	if (validate_path(argc, argv, &map_data) || map_rectangle(argv[1]))
+	if (validate_path(argc, argv, &map_data) || map_rectangle(argv[1]) || check_invalid_newline(argv[1]))
 		return (0);
 	map_data->map_array = readmap(argv[1]);
 	if (!map_data->map_array || validate_map(&map_data) )

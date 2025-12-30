@@ -12,31 +12,33 @@
 
 #include "so_long.h"
 
-char	**copy_map(t_MapData **map_data)
+int	check_invalid_newline(char *path)
 {
-	int		i;
-	int		j;
-	int		line_len;
-	char	**copy_map;
+		char	*line;
+		int		fd;
 
-	i = 0;
-	j = 0;
-	line_len = line_length((*map_data)->path);
-	copy_map = malloc(get_map_height((*map_data)->path) + 1);
-	while ((*map_data)->map_array[i])
-	{
-		j = 0;
-		copy_map[i] = malloc(line_len + 1);
-		while ((*map_data)->map_array[i][j])
+		fd = open(path, O_RDONLY);
+		line = get_next_line(fd);
+		while (line)
 		{
-			copy_map[i][j] = (*map_data)->map_array[i][j];
-			j++;
+			if (ft_strlen(line) == 0)
+			{
+				while (line)
+				{
+					if (ft_strlen(line) != 0)
+					{
+						close(fd);
+						free(line);
+						return(1);
+					}
+					line = get_next_line(fd);
+				}
+			}
+			line = get_next_line(fd);
 		}
-		copy_map[i][j] = '\0';
-		i++;
-	}
-    copy_map[i] = NULL;
-	return (copy_map);
+		close(fd);
+		free(line);
+		return (0);
 }
 
 int	check_after_fill(char **map)
@@ -57,4 +59,22 @@ int	check_after_fill(char **map)
         i++;
 	}
 	return (0);
+}
+
+char	**copy_map(t_MapData **map_data)
+{
+	int	i;
+	int j;
+	char	**new_map;
+
+	new_map = malloc(get_map_height((*map_data)->path) + 1);
+	i = 0;
+	while ((*map_data)->map_array[i])
+	{
+		new_map[i] = malloc(ft_strlen((*map_data)->map_array[i]) + 1);
+		new_map[i] = (*map_data)->map_array[i];
+		i++;
+	}
+	new_map[i] = NULL;
+	return (new_map);
 }

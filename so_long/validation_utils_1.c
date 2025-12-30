@@ -31,14 +31,15 @@ static int	check_lines_length(int fd, int length, int hight)
 {
 	char	*line;
 	int		current_length;
+	int		flag;
 
+	flag = 0;
 	line = get_next_line(fd);
-	while (line)
+	while (line )
 	{
 		current_length = ft_strlen(line);
-		if (current_length > 0 && line[current_length - 1] != '\n')
-			current_length++;
-		if (current_length != length || --hight < 0)
+
+		if (current_length != length && current_length)
 		{
 			free(line);
 			return (1);
@@ -79,27 +80,23 @@ int	map_walls(char **map_array)
 	int	rows;
 	int	cols;
 
-	i = 0;
-	j = 0;
+	i = -1;
+	j = -1;
 	rows = 0;
 	cols = 0;
 	while (map_array[rows])
 		rows++;
 	while (map_array[0][cols])
 		cols++;
-	while (j < cols - 1)
+	while (++j < cols)
 	{
-		if (map_array[0][j] != '1'
-			|| map_array[rows - 1][j] != '1')
+		if (map_array[0][j] != '1' || map_array[rows - 1][j] != '1')
 			return (1);
-		j++;
 	}
-	while (i < rows)
+	while (++i < rows)
 	{
-		if (map_array[i][0] != '1'
-			|| map_array[i][cols - 2] != '1')
+		if (map_array[i][0] != '1' || map_array[i][cols - 1] != '1')
 			return (1);
-		i++;
 	}
 	return (0);
 }
