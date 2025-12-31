@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 19:56:19 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/29 15:40:22 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/12/31 19:37:26 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,31 @@ int	count_collectibles(char **map_array)
 		}
 	}
 	return (count);
+}
+
+void	init_images(t_MapData **mapdata)
+{
+	int	w;
+	int	h;
+
+	h = 32;
+	w = 32;
+	(*mapdata)->Floor_image = mlx_xpm_file_to_image((*mapdata)->Mlx,
+			"textures/download.xpm", &w, &h);
+	(*mapdata)->Exit_image = mlx_xpm_file_to_image((*mapdata)->Mlx,
+			"textures/exit.xpm", &w, &h);
+	(*mapdata)->Player_image = mlx_xpm_file_to_image((*mapdata)->Mlx,
+			"textures/player_floor_background.xpm", &w, &h);
+	(*mapdata)->Collectable_image = mlx_xpm_file_to_image((*mapdata)->Mlx,
+			"textures/lettuce_with_background.xpm", &w, &h);
+	(*mapdata)->Wall_image = mlx_xpm_file_to_image((*mapdata)->Mlx,
+			"textures/wall.xpm", &w, &h);
+}
+
+int	init_mlx(t_MapData **mapdata)
+{
+	(*mapdata)->Mlx = mlx_init();
+	(*mapdata)->win = mlx_new_window((*mapdata)->Mlx, 64 * 32, 64 * 32,
+			"so_long");
+	init_images(mapdata);
 }

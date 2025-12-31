@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/24 17:49:23 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/29 16:39:14 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/12/31 18:08:28 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,28 @@
 
 int	check_invalid_newline(char *path)
 {
-		char	*line;
-		int		fd;
+	char	*line;
+	int		fd;
+	int		empty_found;
 
-		fd = open(path, O_RDONLY);
-		line = get_next_line(fd);
-		while (line)
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+		return (1);
+	empty_found = 0;
+	while ((line = get_next_line(fd)))
+	{
+		if (line[0] == '\n')
+			empty_found = 1;
+		else if (empty_found)
 		{
-			if (ft_strlen(line) == 0)
-			{
-				while (line)
-				{
-					if (ft_strlen(line) != 0)
-					{
-						close(fd);
-						free(line);
-						return(1);
-					}
-					line = get_next_line(fd);
-				}
-			}
-			line = get_next_line(fd);
+			free(line);
+			close(fd);
+			return (1);
 		}
-		close(fd);
 		free(line);
-		return (0);
+	}
+	close(fd);
+	return (0);
 }
 
 int	check_after_fill(char **map)
@@ -54,27 +51,35 @@ int	check_after_fill(char **map)
 		{
 			if (map[i][j] == 'C' || map[i][j] == 'E')
 				return (1);
-            j++;
+			j++;
 		}
-        i++;
+		i++;
 	}
 	return (0);
 }
 
 char	**copy_map(t_MapData **map_data)
 {
-	int	i;
-	int j;
+	int		i;
+	int		height;
 	char	**new_map;
 
-	new_map = malloc(get_map_height((*map_data)->path) + 1);
+	height = get_map_height((*map_data)->path);
+	new_map = malloc(sizeof(char *) * (height + 1));
+	if (!new_map)
+		return (NULL);
 	i = 0;
 	while ((*map_data)->map_array[i])
 	{
 		new_map[i] = malloc(ft_strlen((*map_data)->map_array[i]) + 1);
-		new_map[i] = (*map_data)->map_array[i];
+		if (!new_map[i])
+			return (NULL);
+		ft_strlcpy(new_map[i], (*map_data)->map_array[i],
+			ft_strlen((*map_data)->map_array[i]) + 1);
 		i++;
 	}
 	new_map[i] = NULL;
 	return (new_map);
 }
+
+

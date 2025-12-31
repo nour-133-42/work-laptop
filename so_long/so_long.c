@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 15:14:49 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/29 16:24:05 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/12/31 20:00:37 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,26 @@ char	**readmap(char *path)
 	int		i;
 	int		fd;
 
-	result = malloc(sizeof(char **) * (get_map_height(path) + 1));
-	i = 0;
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
-	{
-		write(2, "Error\nCould not open file\n", 27);
 		return (NULL);
-	}
+	result = malloc(sizeof(char *) * (get_map_height(path) + 1));
+	if (!result)
+		return (NULL);
+	i = 0;
 	line = get_next_line(fd);
-	while (line && ft_strlen(line))
+	while (line)
 	{
+		if (line[0] == '\n')
+		{
+			free(line);
+			break ;
+		}
 		result[i++] = line;
 		line = get_next_line(fd);
 	}
 	result[i] = NULL;
 	close(fd);
-	free(line);
 	return (result);
 }
 
@@ -114,15 +117,21 @@ int	validate_path(int argc, char *argv[], t_MapData **mapdata)
 int	main(int argc, char *argv[])
 {
 	t_MapData	*map_data;
+	void		*mlx;
+	void		*win;
 
 	map_data = malloc(sizeof(t_MapData));
-	if (validate_path(argc, argv, &map_data) || map_rectangle(argv[1]) || check_invalid_newline(argv[1]))
+	if (validate_path(argc, argv, &map_data) || map_rectangle(argv[1])
+		|| check_invalid_newline(argv[1]))
 		return (0);
 	map_data->map_array = readmap(argv[1]);
-	if (!map_data->map_array || validate_map(&map_data) )
+	if (!map_data->map_array || validate_map(&map_data))
 	{
 		write(2, "Error\nInvalid map\n", 19);
 		return (0);
 	}
+	mlx_key_hook(win, key_hook, &map_data);
+	mlx_hook(win, 17, 0, close_window, &map_data);
+	mlx_loop(map_data->Mlx);
 	return (0);
 }

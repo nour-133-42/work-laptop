@@ -6,12 +6,13 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 17:37:55 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/24 18:00:08 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/12/31 19:59:54 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line/get_next_line.h"
 #include <fcntl.h>
+#include <mlx.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -25,10 +26,12 @@ typedef struct s_MapData
 	char	**map_array;
 	char	*path;
 	void	*Mlx;
+	void	*win;
 	void	*Floor_image;
 	void	*Exit_image;
 	void	*Collectable_image;
 	void	*Player_image;
+	void	*Wall_image;
 }			t_MapData;
 
 int			line_length(char *path);
@@ -41,7 +44,8 @@ int			find_player_position(char **map_array, int *player_x,
 int			flood_fill(char **map_array, int x, int y, int *collectible_count);
 char		**readmap(char *path);
 int			count_collectibles(char **map_array);
-char	**copy_map(t_MapData **map_data);
-int	check_after_fill(char **map);
-int	check_invalid_newline(char *path);
-
+char		**copy_map(t_MapData **map_data);
+int			check_after_fill(char **map);
+int			check_invalid_newline(char *path);
+int			close_window(void *param);
+int			key_hook(int keycode, void *param);

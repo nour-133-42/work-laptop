@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:33:32 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/29 15:59:21 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/12/31 14:59:16 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,9 @@ static int	check_lines_length(int fd, int length, int hight)
 
 	flag = 0;
 	line = get_next_line(fd);
-	while (line )
+	while (line)
 	{
 		current_length = ft_strlen(line);
-
 		if (current_length != length && current_length)
 		{
 			free(line);
@@ -84,7 +83,7 @@ int	map_walls(char **map_array)
 	j = -1;
 	rows = 0;
 	cols = 0;
-	while (map_array[rows])
+	while (map_array[rows] && ft_strlen(map_array[rows]))
 		rows++;
 	while (map_array[0][cols])
 		cols++;
@@ -100,7 +99,6 @@ int	map_walls(char **map_array)
 	}
 	return (0);
 }
-
 
 int	map_elements(char **map_array)
 {
