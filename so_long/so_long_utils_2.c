@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 18:09:25 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/31 19:59:28 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/01/01 21:24:09 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,36 @@ void	put_image_in_windows(int i, int j, t_MapData **mapdata)
 	map = (*mapdata)->map_array;
 	if (map[i][j] == '1')
 		mlx_put_image_to_window((*mapdata)->Mlx, (*mapdata)->win,
-			(*mapdata)->Wall_image, i * 32, j * 32);
+			(*mapdata)->Wall_image, j * 32, i * 32);
 	else if (map[i][j] == '0')
 		mlx_put_image_to_window((*mapdata)->Mlx, (*mapdata)->win,
-			(*mapdata)->Floor_image, i * 32, j * 32);
+			(*mapdata)->Floor_image, j * 32, i * 32);
 	else if (map[i][j] == 'P')
 		mlx_put_image_to_window((*mapdata)->Mlx, (*mapdata)->win,
-			(*mapdata)->Player_image, i * 32, j * 32);
+			(*mapdata)->Player_image, j * 32, i * 32);
 	else if (map[i][j] == 'E')
 		mlx_put_image_to_window((*mapdata)->Mlx, (*mapdata)->win,
-			(*mapdata)->Exit_image, i * 32, j * 32);
+			(*mapdata)->Exit_image, j * 32, i * 32);
 	else if (map[i][j] == 'C')
 		mlx_put_image_to_window((*mapdata)->Mlx, (*mapdata)->win,
-			(*mapdata)->Collectable_image, i * 32, j * 32);
-	else
-	{
-	}
+			(*mapdata)->Collectable_image, j * 32, i * 32);
 }
 
-int	draw_window(t_MapData **mapdata)
+void	destroy_image(t_MapData **mapdata)
+{
+	if ((*mapdata)->Collectable_image)
+		mlx_destroy_image((*mapdata)->Mlx, (*mapdata)->Collectable_image);
+	if ((*mapdata)->Exit_image)
+		mlx_destroy_image((*mapdata)->Mlx, (*mapdata)->Exit_image);
+	if ((*mapdata)->Floor_image)
+		mlx_destroy_image((*mapdata)->Mlx, (*mapdata)->Floor_image);
+	if ((*mapdata)->Player_image)
+		mlx_destroy_image((*mapdata)->Mlx, (*mapdata)->Player_image);
+	if ((*mapdata)->Wall_image)
+		mlx_destroy_image((*mapdata)->Mlx, (*mapdata)->Wall_image);
+}
+
+void	draw_window(t_MapData **mapdata)
 {
 	int		i;
 	int		j;
@@ -57,23 +68,29 @@ int	draw_window(t_MapData **mapdata)
 	}
 }
 
-int	key_hook(int keycode, void *param)
+int	key_hook(int keycode, t_MapData **param)
 {
-	if (keycode == 53) // ESC
+	if (keycode == 65307) // ESC
+	{
+		free_all(param);
 		exit(0);
-	if (keycode == 13) // W
-		move_up();
-	if (keycode == 0) // A
-		move_left();
-	if (keycode == 1) // S
-		move_right();
-	if (keycode == 2) // D
-		move_down();
+	}
+	if (keycode == 119) // W
+		move_up(param);
+	if (keycode == 97) // A
+		move_left(param);
+	if (keycode == 115) // S
+		move_right(param);
+	if (keycode == 100) // D
+		move_down(param);
 	return (0);
+	mlx_clear_window((*param)->Mlx, (*param)->win);
+	draw_window(param);
 }
 
-int	close_window(void *param)
+int	close_window(t_MapData **param)
 {
+	free_all(param);
 	exit(0);
 	return (0);
 }

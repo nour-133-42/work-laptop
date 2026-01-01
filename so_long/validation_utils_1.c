@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:33:32 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/31 14:59:16 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/01/01 18:16:58 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	flood_fill(char **map_array, int x, int y, int *collectible_count)
 	return (1);
 }
 
-static int	check_lines_length(int fd, int length, int hight)
+static int	check_lines_length(int fd, int length)
 {
 	char	*line;
 	int		current_length;
@@ -38,7 +38,7 @@ static int	check_lines_length(int fd, int length, int hight)
 	while (line)
 	{
 		current_length = ft_strlen(line);
-		if (current_length != length && current_length)
+		if (current_length != length && !current_length)
 		{
 			free(line);
 			return (1);
@@ -62,7 +62,7 @@ int	map_rectangle(char *path)
 		write(2, "Error\nCould not open file\n", 27);
 		return (1);
 	}
-	if (check_lines_length(fd, length, get_map_height(path)) == 1)
+	if (check_lines_length(fd, length) == 1)
 	{
 		close(fd);
 		write(2, "Error\nMap is not rectangular\n", 29);

@@ -6,17 +6,19 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 19:56:19 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/31 19:37:26 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/01/01 21:25:44 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	find_player_position(char **map_array, int *player_x, int *player_y)
+int	find_player_position(char **map_array, int *px, int *py)
 {
 	int	i;
 	int	j;
 
+	*px = 0;
+	*py = 0;
 	i = 0;
 	while (map_array[i])
 	{
@@ -25,8 +27,8 @@ int	find_player_position(char **map_array, int *player_x, int *player_y)
 		{
 			if (map_array[i][j] == 'P')
 			{
-				*player_x = j;
-				*player_y = i;
+				*px = j;
+				*py = i;
 				return (1);
 			}
 			j++;
@@ -81,7 +83,7 @@ int	count_collectibles(char **map_array)
 	return (count);
 }
 
-void	init_images(t_MapData **mapdata)
+int	init_images(t_MapData **mapdata)
 {
 	int	w;
 	int	h;
@@ -98,12 +100,28 @@ void	init_images(t_MapData **mapdata)
 			"textures/lettuce_with_background.xpm", &w, &h);
 	(*mapdata)->Wall_image = mlx_xpm_file_to_image((*mapdata)->Mlx,
 			"textures/wall.xpm", &w, &h);
+	if (!(*mapdata)->Player_image || !(*mapdata)->Collectable_image
+		|| !(*mapdata)->Floor_image || !(*mapdata)->Exit_image
+		|| !(*mapdata)->Wall_image)
+	{
+		free_all(mapdata);
+		return (1);
+	}
+	return (0);
 }
 
 int	init_mlx(t_MapData **mapdata)
 {
 	(*mapdata)->Mlx = mlx_init();
-	(*mapdata)->win = mlx_new_window((*mapdata)->Mlx, 64 * 32, 64 * 32,
-			"so_long");
-	init_images(mapdata);
+	(*mapdata)->win = mlx_new_window((*mapdata)->Mlx,
+			ft_strlen((*mapdata)->map_array[0]) * 32,
+			get_map_height((*mapdata)->path) * 32, "so_long");
+	if (init_images(mapdata))
+		return (1);
+	(*mapdata)->collectible_count = count_collectibles((*mapdata)->map_array);
+	(*mapdata)->current_collectible_count = 0;
+	find_player_position((*mapdata)->map_array, &(*mapdata)->px,
+		&(*mapdata)->py);
+	find_exit_position((*mapdata)->map_array, &(*mapdata)->ex, &(*mapdata)->ey);
+	return (0);
 }

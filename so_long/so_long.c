@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 15:14:49 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/31 20:00:37 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/01/01 18:35:52 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	validate_map(t_MapData **map_data)
 		write(2, "Error\nthar is no valid path to Exit", 36);
 		return (1);
 	}
+	free_map(map_data_array);
 	return (0);
 }
 
@@ -117,8 +118,6 @@ int	validate_path(int argc, char *argv[], t_MapData **mapdata)
 int	main(int argc, char *argv[])
 {
 	t_MapData	*map_data;
-	void		*mlx;
-	void		*win;
 
 	map_data = malloc(sizeof(t_MapData));
 	if (validate_path(argc, argv, &map_data) || map_rectangle(argv[1])
@@ -130,8 +129,11 @@ int	main(int argc, char *argv[])
 		write(2, "Error\nInvalid map\n", 19);
 		return (0);
 	}
-	mlx_key_hook(win, key_hook, &map_data);
-	mlx_hook(win, 17, 0, close_window, &map_data);
+	if (init_mlx(&map_data))
+		return (0);
+	draw_window(&map_data);
+	mlx_key_hook(map_data->win, key_hook, &map_data);
+	mlx_hook(map_data->win, 17, 0, close_window, &map_data);
 	mlx_loop(map_data->Mlx);
 	return (0);
 }
