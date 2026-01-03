@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 15:14:49 by nalshmai          #+#    #+#             */
-/*   Updated: 2026/01/01 18:35:52 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/01/03 19:30:20 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,6 @@ char	**readmap(char *path)
 	line = get_next_line(fd);
 	while (line)
 	{
-		if (line[0] == '\n')
-		{
-			free(line);
-			break ;
-		}
 		result[i++] = line;
 		line = get_next_line(fd);
 	}
@@ -47,19 +42,20 @@ int	validate_map(t_MapData **map_data)
 	char	**map_data_array;
 	int		x;
 	int		y;
-	int		collectible_count;
 
 	if (!find_player_position((*map_data)->map_array, &x, &y))
 		return (1);
 	map_data_array = copy_map(map_data);
-	(*map_data)->collectible_count = count_collectibles(map_data_array);
-	collectible_count = (*map_data)->collectible_count;
+	(*map_data)->c_count = count_collectibles(map_data_array);
 	if (map_walls(map_data_array) || map_elements(map_data_array))
-		return (1);
-	flood_fill(map_data_array, x, y, &collectible_count);
-	if (/*collectible_count != ||*/ !check_after_fill(map_data_array))
 	{
-		write(2, "Error\nthar is no valid path to Exit", 36);
+		free_map(map_data_array);
+		return (1);
+	}
+	flood_fill(map_data_array, x, y, map_data);
+	if ((*map_data)->c_count != 0 || (*map_data)->exit_flag == 0)
+	{
+		free_map(map_data_array);
 		return (1);
 	}
 	free_map(map_data_array);
@@ -71,13 +67,11 @@ int	get_map_height(char *path)
 	int		fd;
 	char	*line;
 	int		height;
-	int		line_len;
 
 	height = 0;
 	fd = open(path, O_RDONLY);
 	line = get_next_line(fd);
-	line_len = ft_strlen(line);
-	while (line && line_len)
+	while (line)
 	{
 		height++;
 		free(line);
@@ -105,6 +99,7 @@ int	validate_path(int argc, char *argv[], t_MapData **mapdata)
 			if (argv[1][i + 1] != 'b' || argv[1][i + 2] != 'e' || argv[1][i
 				+ 3] != 'r' || argv[1][i + 4] != '\0')
 			{
+				free(*mapdata);
 				write(2, "Error\nInvalid file extension\n", 30);
 				return (1);
 			}
@@ -120,12 +115,15 @@ int	main(int argc, char *argv[])
 	t_MapData	*map_data;
 
 	map_data = malloc(sizeof(t_MapData));
-	if (validate_path(argc, argv, &map_data) || map_rectangle(argv[1])
-		|| check_invalid_newline(argv[1]))
+	if (validate_path(argc, argv, &map_data) || map_rectangle(argv[1],
+			&map_data) || check_invalid_newline(argv[1]))
 		return (0);
 	map_data->map_array = readmap(argv[1]);
-	if (!map_data->map_array || validate_map(&map_data))
+	if (!map_data->map_array || check_invalid_characters(map_data->map_array)
+		|| validate_map(&map_data))
 	{
+		free_map(map_data->map_array);
+		free(map_data);
 		write(2, "Error\nInvalid map\n", 19);
 		return (0);
 	}
@@ -134,6 +132,6 @@ int	main(int argc, char *argv[])
 	draw_window(&map_data);
 	mlx_key_hook(map_data->win, key_hook, &map_data);
 	mlx_hook(map_data->win, 17, 0, close_window, &map_data);
-	mlx_loop(map_data->Mlx);
+	mlx_loop(map_data->mlx);
 	return (0);
 }

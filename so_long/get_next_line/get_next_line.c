@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/29 18:00:38 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/09/09 15:37:38 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/01/03 17:01:46 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,6 @@ static char	*return_the_line(char *s)
 	count = 0;
 	while (s[count] && s[count] != '\n')
 		count++;
-	// if (s[count] == '\n')
-	// 	count++;
 	res = malloc(count + 1);
 	if (!res)
 		return (NULL);

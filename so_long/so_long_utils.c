@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 19:56:19 by nalshmai          #+#    #+#             */
-/*   Updated: 2026/01/01 21:25:44 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/01/03 19:33:15 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,9 @@ int	line_length(char *path)
 
 	length = 0;
 	fd = open(path, O_RDONLY);
-	if (fd < 0)
-	{
-		write(2, "Error\nCould not open file\n", 27);
-		return (0);
-	}
 	line = get_next_line(fd);
 	if (line)
-	{
-		while (line[length])
-			length++;
-	}
+		length = ft_strlen(line);
 	free(line);
 	close(fd);
 	return (length);
@@ -90,19 +82,19 @@ int	init_images(t_MapData **mapdata)
 
 	h = 32;
 	w = 32;
-	(*mapdata)->Floor_image = mlx_xpm_file_to_image((*mapdata)->Mlx,
+	(*mapdata)->floor_image = mlx_xpm_file_to_image((*mapdata)->mlx,
 			"textures/download.xpm", &w, &h);
-	(*mapdata)->Exit_image = mlx_xpm_file_to_image((*mapdata)->Mlx,
+	(*mapdata)->exit_image = mlx_xpm_file_to_image((*mapdata)->mlx,
 			"textures/exit.xpm", &w, &h);
-	(*mapdata)->Player_image = mlx_xpm_file_to_image((*mapdata)->Mlx,
+	(*mapdata)->player_image = mlx_xpm_file_to_image((*mapdata)->mlx,
 			"textures/player_floor_background.xpm", &w, &h);
-	(*mapdata)->Collectable_image = mlx_xpm_file_to_image((*mapdata)->Mlx,
+	(*mapdata)->collectable_image = mlx_xpm_file_to_image((*mapdata)->mlx,
 			"textures/lettuce_with_background.xpm", &w, &h);
-	(*mapdata)->Wall_image = mlx_xpm_file_to_image((*mapdata)->Mlx,
+	(*mapdata)->wall_image = mlx_xpm_file_to_image((*mapdata)->mlx,
 			"textures/wall.xpm", &w, &h);
-	if (!(*mapdata)->Player_image || !(*mapdata)->Collectable_image
-		|| !(*mapdata)->Floor_image || !(*mapdata)->Exit_image
-		|| !(*mapdata)->Wall_image)
+	if (!(*mapdata)->player_image || !(*mapdata)->collectable_image
+		|| !(*mapdata)->floor_image || !(*mapdata)->exit_image
+		|| !(*mapdata)->wall_image)
 	{
 		free_all(mapdata);
 		return (1);
@@ -112,16 +104,18 @@ int	init_images(t_MapData **mapdata)
 
 int	init_mlx(t_MapData **mapdata)
 {
-	(*mapdata)->Mlx = mlx_init();
-	(*mapdata)->win = mlx_new_window((*mapdata)->Mlx,
+	(*mapdata)->mlx = mlx_init();
+	(*mapdata)->win = mlx_new_window((*mapdata)->mlx,
 			ft_strlen((*mapdata)->map_array[0]) * 32,
-			get_map_height((*mapdata)->path) * 32, "so_long");
+			(get_map_height((*mapdata)->path) - count_empty_lines(mapdata))
+			* 32, "so_long");
 	if (init_images(mapdata))
 		return (1);
-	(*mapdata)->collectible_count = count_collectibles((*mapdata)->map_array);
-	(*mapdata)->current_collectible_count = 0;
+	(*mapdata)->c_count = count_collectibles((*mapdata)->map_array);
+	(*mapdata)->current_c_count = 0;
 	find_player_position((*mapdata)->map_array, &(*mapdata)->px,
 		&(*mapdata)->py);
 	find_exit_position((*mapdata)->map_array, &(*mapdata)->ex, &(*mapdata)->ey);
+	(*mapdata)->moves = 0;
 	return (0);
 }

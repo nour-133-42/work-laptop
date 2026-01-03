@@ -7,14 +7,12 @@ SRCS = so_long.c so_long_utils_3.c so_long_utils_4.c validation_utils_1.c so_lon
 OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(INCLUDES) $(LDFLAGS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 clean:
 	rm -f $(OBJS)
-	make  clean
 fclean: clean
 	rm -f $(NAME)
-	make  fclean
 re: fclean all
 .PHONY: all clean fclean re

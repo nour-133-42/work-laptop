@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/01 15:32:23 by nalshmai          #+#    #+#             */
-/*   Updated: 2026/01/01 20:57:20 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/01/03 16:58:39 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ int	free_all(t_MapData **mapdata)
 
 	map = (*mapdata)->map_array;
 	i = 0;
-	if ((*mapdata)->win && (*mapdata)->Mlx)
-		mlx_destroy_window((*mapdata)->Mlx, (*mapdata)->win);
+	if ((*mapdata)->win && (*mapdata)->mlx)
+		mlx_destroy_window((*mapdata)->mlx, (*mapdata)->win);
 	destroy_image(mapdata);
-	if ((*mapdata)->Mlx)
+	if ((*mapdata)->mlx)
 	{
-		mlx_destroy_display((*mapdata)->Mlx);
-		free((*mapdata)->Mlx);
+		mlx_destroy_display((*mapdata)->mlx);
+		free((*mapdata)->mlx);
 	}
 	free_map((*mapdata)->map_array);
 	free(*mapdata);
@@ -67,60 +67,54 @@ int	find_exit_position(char **map_array, int *ex, int *ey)
 	return (0);
 }
 
-void	move_down(t_MapData **mapdata)
+void	move_down(t_MapData **md)
 {
 	char	**map;
-	int		px;
-	int		py;
+	char	target;
 
-	map = (*mapdata)->map_array;
-	px = (*mapdata)->px;
-	py = (*mapdata)->py;
-	if (map[py + 1][px] == '0')
-		swap(&map[py + 1][px], &map[py][px]);
-	else if (map[py + 1][px] == 'C')
+	map = (*md)->map_array;
+	target = map[(*md)->py + 1][(*md)->px];
+	if (target == '1')
+		return ;
+	map[(*md)->py][(*md)->px] = '0';
+	if (target == '0')
+		map[(*md)->py + 1][(*md)->px] = 'P';
+	else if (target == 'C')
 	{
-		swap(&map[py + 1][px], &map[py][px]);
-		map[py][px] = '0';
-		(*mapdata)->current_collectible_count++;
+		map[(*md)->py + 1][(*md)->px] = 'P';
+		(*md)->current_c_count++;
 	}
-	else if (map[py + 1][px] == 'E')
+	else if (target == 'E')
 	{
-		swap(&map[py + 1][px], &map[py][px]);
-		map[py][px] = '0';
-		if ((*mapdata)->current_collectible_count == (*mapdata)->collectible_count)
-			close_window(mapdata);
+		if ((*md)->c_count == (*md)->current_c_count)
+			close_window(md);
+		map[(*md)->py + 1][(*md)->px] = 'P';
 	}
-	if ((map[py + 1][px] == '0' || map[py + 1][px] == 'C' || map[py
-			+ 1][px] == 'E'))
-		update_map(mapdata, map, 2);
+	update_map(md, map, 1);
 }
 
-void	move_up(t_MapData **mapdata)
+void	move_up(t_MapData **md)
 {
 	char	**map;
-	int		px;
-	int		py;
+	char	target;
 
-	map = (*mapdata)->map_array;
-	px = (*mapdata)->px;
-	py = (*mapdata)->py;
-	if (map[py - 1][px] == '0')
-		swap(&map[py - 1][px], &map[py][px]);
-	else if (map[py - 1][px] == 'C')
+	map = (*md)->map_array;
+	target = map[(*md)->py - 1][(*md)->px];
+	if (target == '1')
+		return ;
+	map[(*md)->py][(*md)->px] = '0';
+	if (target == '0')
+		map[(*md)->py - 1][(*md)->px] = 'P';
+	else if (target == 'C')
 	{
-		swap(&map[py - 1][px], &map[py][px]);
-		map[py][px] = '0';
-		(*mapdata)->current_collectible_count++;
+		map[(*md)->py - 1][(*md)->px] = 'P';
+		(*md)->current_c_count++;
 	}
-	else if (map[py - 1][px] == 'E')
+	else if (target == 'E')
 	{
-		swap(&map[py - 1][px], &map[py][px]);
-		map[py][px] = '0';
-		if ((*mapdata)->current_collectible_count == (*mapdata)->collectible_count)
-			close_window(mapdata);
+		if ((*md)->c_count == (*md)->current_c_count)
+			close_window(md);
+		map[(*md)->py - 1][(*md)->px] = 'P';
 	}
-	if ((map[py - 1][px] == '0' || map[py - 1][px] == 'C' || map[py
-			- 1][px] == 'E'))
-		update_map(mapdata, map, 2);
+	update_map(md, map, 2);
 }

@@ -6,69 +6,71 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:33:32 by nalshmai          #+#    #+#             */
-/*   Updated: 2026/01/01 18:16:58 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/01/03 19:08:05 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	flood_fill(char **map_array, int x, int y, int *collectible_count)
+void	flood_fill(char **map, int x, int y, t_MapData **md)
 {
-	if (map_array[y][x] == '1' || map_array[y][x] == 'E'
-		|| map_array[y][x] == 'V')
-		return (0);
-	if (map_array[y][x] == 'C')
-		(*collectible_count)--;
-	map_array[y][x] = 'V';
-	flood_fill(map_array, x + 1, y, collectible_count);
-	flood_fill(map_array, x - 1, y, collectible_count);
-	flood_fill(map_array, x, y + 1, collectible_count);
-	flood_fill(map_array, x, y - 1, collectible_count);
-	return (1);
+	if (map[y][x] == '1' || map[y][x] == 'V')
+		return ;
+	if (map[y][x] == 'C')
+		(*md)->c_count--;
+	if (map[y][x] == 'E')
+	{
+		(*md)->exit_flag = 1;
+		return ;
+	}
+	map[y][x] = 'V';
+	flood_fill(map, x + 1, y, md);
+	flood_fill(map, x - 1, y, md);
+	flood_fill(map, x, y + 1, md);
+	flood_fill(map, x, y - 1, md);
 }
 
-static int	check_lines_length(int fd, int length)
+static int	check_lines_length(char **map)
 {
-	char	*line;
-	int		current_length;
-	int		flag;
+	int	current_length;
+	int	length;
+	int	i;
 
-	flag = 0;
-	line = get_next_line(fd);
-	while (line)
+	i = 0;
+	length = ft_strlen(map[0]);
+	while (map[i])
 	{
-		current_length = ft_strlen(line);
-		if (current_length != length && !current_length)
-		{
-			free(line);
+		current_length = ft_strlen(map[i]);
+		if (current_length != length && current_length)
 			return (1);
-		}
-		free(line);
-		line = get_next_line(fd);
+		i++;
 	}
-	free(line);
 	return (0);
 }
 
-int	map_rectangle(char *path)
+int	map_rectangle(char *path, t_MapData **mapdata)
 {
-	int	fd;
-	int	length;
+	int		fd;
+	char	**map;
 
-	length = line_length(path);
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 	{
 		write(2, "Error\nCould not open file\n", 27);
-		return (1);
-	}
-	if (check_lines_length(fd, length) == 1)
-	{
-		close(fd);
-		write(2, "Error\nMap is not rectangular\n", 29);
+		free(*mapdata);
 		return (1);
 	}
 	close(fd);
+	map = readmap(path);
+	if (check_lines_length(map) == 1)
+	{
+		close(fd);
+		free(*mapdata);
+		write(2, "Error\nMap is not rectangular\n", 29);
+		free_map(map);
+		return (1);
+	}
+	free_map(map);
 	return (0);
 }
 

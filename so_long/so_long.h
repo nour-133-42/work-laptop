@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 17:37:55 by nalshmai          #+#    #+#             */
-/*   Updated: 2026/01/01 20:56:11 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/01/03 19:32:01 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,33 +22,35 @@ typedef struct s_MapData
 	int		height;
 	int		player_count;
 	int		exit_count;
-	int		collectible_count;
-	int		current_collectible_count;
+	int		c_count;
+	int		current_c_count;
 	int		px;
 	int		py;
 	int		ex;
 	int		ey;
+	int		exit_flag;
 	char	**map_array;
 	char	*path;
-	// int	moves;
-	void	*Mlx;
+	int		moves;
+	void	*mlx;
 	void	*win;
-	void	*Floor_image;
-	void	*Exit_image;
-	void	*Collectable_image;
-	void	*Player_image;
-	void	*Wall_image;
+	void	*floor_image;
+	void	*exit_image;
+	void	*collectable_image;
+	void	*player_image;
+	void	*wall_image;
 }			t_MapData;
 
 int			line_length(char *path);
+void		ft_putnbr_fd(int n, int fd);
 int			free_all(t_MapData **mapdata);
-int			map_rectangle(char *path);
+int			map_rectangle(char *path, t_MapData **mapdata);
 int			map_walls(char **map_array);
 int			map_elements(char **map_array);
 int			get_map_height(char *path);
 int			find_player_position(char **map_array, int *player_x,
 				int *player_y);
-int			flood_fill(char **map_array, int x, int y, int *collectible_count);
+void		flood_fill(char **map_array, int x, int y, t_MapData **md);
 char		**readmap(char *path);
 int			count_collectibles(char **map_array);
 char		**copy_map(t_MapData **map_data);
@@ -67,3 +69,5 @@ void		move_left(t_MapData **mapdata);
 void		swap(char *a, char *b);
 void		free_map(char **map);
 void		update_map(t_MapData **mapdata, char **map, int t);
+int			check_invalid_characters(char **map_array);
+int			count_empty_lines(t_MapData **md);
