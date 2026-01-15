@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/29 18:00:38 by nalshmai          #+#    #+#             */
-/*   Updated: 2026/01/03 17:01:46 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/01/04 19:35:55 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,18 @@ static char	*left_over(char *s)
 	return (res);
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line(int fd, int flag)
 {
 	static char	*leftover;
 	char		*s;
 	char		*res;
 
+	if (flag == -1)
+	{
+		free(leftover);
+		leftover = NULL;
+		return (NULL);
+	}
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!leftover)

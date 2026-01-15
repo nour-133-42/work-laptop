@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/24 17:49:23 by nalshmai          #+#    #+#             */
-/*   Updated: 2026/01/03 18:50:56 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/01/05 15:22:39 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,8 @@ int	check_invalid_newline(char *path)
 	int		empty_found;
 
 	fd = open(path, O_RDONLY);
-	if (fd < 0)
-		return (1);
 	empty_found = 0;
-	line = get_next_line(fd);
+	line = get_next_line(fd, 1);
 	while (line)
 	{
 		if (line[0] == '\n')
@@ -58,7 +56,9 @@ int	check_invalid_newline(char *path)
 			return (1);
 		}
 		free(line);
-		line = get_next_line(fd);
+		line = get_next_line(fd, 1);
+		if (!line)
+			get_next_line(fd, -1);
 	}
 	close(fd);
 	return (0);
@@ -99,7 +99,10 @@ char	**copy_map(t_MapData **map_data)
 	{
 		new_map[i] = malloc(ft_strlen((*map_data)->map_array[i]) + 1);
 		if (!new_map[i])
+		{
+			free_map(new_map);
 			return (NULL);
+		}
 		ft_strlcpy(new_map[i], (*map_data)->map_array[i],
 			ft_strlen((*map_data)->map_array[i]) + 1);
 		i++;

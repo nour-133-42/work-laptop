@@ -6,15 +6,17 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 17:37:55 by nalshmai          #+#    #+#             */
-/*   Updated: 2026/01/03 19:32:01 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/01/07 11:52:18 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line/get_next_line.h"
-#include <fcntl.h>
-#include <mlx.h>
-#include <stdlib.h>
-#include <unistd.h>
+#ifndef SO_LONG_H
+# define SO_LONG_H
+# include "get_next_line/get_next_line.h"
+# include "minilibx-linux/mlx.h"
+# include <fcntl.h>
+# include <stdlib.h>
+# include <unistd.h>
 
 typedef struct s_MapData
 {
@@ -71,3 +73,5 @@ void		free_map(char **map);
 void		update_map(t_MapData **mapdata, char **map, int t);
 int			check_invalid_characters(char **map_array);
 int			count_empty_lines(t_MapData **md);
+void		first_init(t_MapData **md);
+#endif

@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 19:56:19 by nalshmai          #+#    #+#             */
-/*   Updated: 2026/01/03 19:33:15 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/01/05 15:18:47 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	line_length(char *path)
 
 	length = 0;
 	fd = open(path, O_RDONLY);
-	line = get_next_line(fd);
+	line = get_next_line(fd, 1);
 	if (line)
 		length = ft_strlen(line);
 	free(line);
@@ -104,11 +104,16 @@ int	init_images(t_MapData **mapdata)
 
 int	init_mlx(t_MapData **mapdata)
 {
+	first_init(mapdata);
 	(*mapdata)->mlx = mlx_init();
+	if (!(*mapdata)->mlx)
+		return (free_all(mapdata));
 	(*mapdata)->win = mlx_new_window((*mapdata)->mlx,
 			ft_strlen((*mapdata)->map_array[0]) * 32,
 			(get_map_height((*mapdata)->path) - count_empty_lines(mapdata))
 			* 32, "so_long");
+	if (!(*mapdata)->win)
+		return (free_all(mapdata));
 	if (init_images(mapdata))
 		return (1);
 	(*mapdata)->c_count = count_collectibles((*mapdata)->map_array);

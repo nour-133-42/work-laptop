@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/01 17:36:45 by nalshmai          #+#    #+#             */
-/*   Updated: 2026/01/03 19:31:45 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/01/07 12:01:58 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,22 +125,4 @@ void	update_map(t_MapData **mapdata, char **map, int t)
 	write(1, "\n", 1);
 	mlx_clear_window((*mapdata)->mlx, (*mapdata)->win);
 	draw_window(mapdata);
-}
-
-int	count_empty_lines(t_MapData **md)
-{
-	int		count;
-	int		i;
-	char	**map;
-
-	count = 0;
-	map = (*md)->map_array;
-	i = 0;
-	while (map[i])
-	{
-		if (!ft_strlen(map[i]))
-			count++;
-		i++;
-	}
-	return (count);
 }

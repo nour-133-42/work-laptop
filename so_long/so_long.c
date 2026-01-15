@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 15:14:49 by nalshmai          #+#    #+#             */
-/*   Updated: 2026/01/03 19:30:20 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/01/05 15:21:44 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,19 @@ char	**readmap(char *path)
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 		return (NULL);
+	if (get_map_height(path) == 0 || get_map_height(path) == 1)
+		return (NULL);
 	result = malloc(sizeof(char *) * (get_map_height(path) + 1));
 	if (!result)
 		return (NULL);
 	i = 0;
-	line = get_next_line(fd);
+	line = get_next_line(fd, 1);
 	while (line)
 	{
 		result[i++] = line;
-		line = get_next_line(fd);
+		line = get_next_line(fd, 1);
+		if (!line)
+			get_next_line(fd, -1);
 	}
 	result[i] = NULL;
 	close(fd);
@@ -46,6 +50,8 @@ int	validate_map(t_MapData **map_data)
 	if (!find_player_position((*map_data)->map_array, &x, &y))
 		return (1);
 	map_data_array = copy_map(map_data);
+	if (!map_data_array)
+		return (1);
 	(*map_data)->c_count = count_collectibles(map_data_array);
 	if (map_walls(map_data_array) || map_elements(map_data_array))
 	{
@@ -70,15 +76,16 @@ int	get_map_height(char *path)
 
 	height = 0;
 	fd = open(path, O_RDONLY);
-	line = get_next_line(fd);
+	line = get_next_line(fd, 1);
 	while (line)
 	{
 		height++;
 		free(line);
-		line = get_next_line(fd);
+		line = get_next_line(fd, 1);
+		if (!line)
+			get_next_line(fd, -1);
 	}
 	close(fd);
-	free(line);
 	return (height);
 }
 
@@ -89,6 +96,7 @@ int	validate_path(int argc, char *argv[], t_MapData **mapdata)
 	if (argc != 2)
 	{
 		write(2, "Error\nInvalid number of arguments\n", 35);
+		free(*mapdata);
 		return (1);
 	}
 	i = 0;
@@ -115,16 +123,19 @@ int	main(int argc, char *argv[])
 	t_MapData	*map_data;
 
 	map_data = malloc(sizeof(t_MapData));
-	if (validate_path(argc, argv, &map_data) || map_rectangle(argv[1],
-			&map_data) || check_invalid_newline(argv[1]))
+	if (!map_data || validate_path(argc, argv, &map_data)
+		|| map_rectangle(argv[1], &map_data) || check_invalid_newline(argv[1]))
 		return (0);
 	map_data->map_array = readmap(argv[1]);
 	if (!map_data->map_array || check_invalid_characters(map_data->map_array)
 		|| validate_map(&map_data))
 	{
-		free_map(map_data->map_array);
+		if (map_data->map_array)
+		{
+			free_map(map_data->map_array);
+			write(2, "Error\nInvalid map\n", 19);
+		}
 		free(map_data);
-		write(2, "Error\nInvalid map\n", 19);
 		return (0);
 	}
 	if (init_mlx(&map_data))

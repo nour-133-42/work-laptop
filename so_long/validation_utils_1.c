@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:33:32 by nalshmai          #+#    #+#             */
-/*   Updated: 2026/01/03 19:08:05 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/01/04 20:37:59 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@ void	flood_fill(char **map, int x, int y, t_MapData **md)
 	if (map[y][x] == 'C')
 		(*md)->c_count--;
 	if (map[y][x] == 'E')
-	{
 		(*md)->exit_flag = 1;
-		return ;
-	}
 	map[y][x] = 'V';
 	flood_fill(map, x + 1, y, md);
 	flood_fill(map, x - 1, y, md);
@@ -62,12 +59,13 @@ int	map_rectangle(char *path, t_MapData **mapdata)
 	}
 	close(fd);
 	map = readmap(path);
-	if (check_lines_length(map) == 1)
+	if (!map || check_lines_length(map) == 1)
 	{
 		close(fd);
 		free(*mapdata);
 		write(2, "Error\nMap is not rectangular\n", 29);
-		free_map(map);
+		if (map)
+			free_map(map);
 		return (1);
 	}
 	free_map(map);

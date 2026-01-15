@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 18:09:25 by nalshmai          #+#    #+#             */
-/*   Updated: 2026/01/03 17:01:27 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/01/07 12:03:16 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,12 @@ int	key_hook(int keycode, t_MapData **param)
 
 int	close_window(t_MapData **param)
 {
+	if ((*param)->c_count == (*param)->current_c_count)
+	{
+		write(1, "Moves: ", 7);
+		ft_putnbr_fd((*param)->moves + 1, 1);
+		write(1, "\n", 1);
+	}
 	free_all(param);
 	exit(0);
 	return (0);
