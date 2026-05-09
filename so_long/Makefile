@@ -1,8 +1,8 @@
 NAME = so_long
-
+#the make for omarchi
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
-
+# CFLAGS = -Wall -Wextra -Werror -g
+# make CFLAGS="-O2 -fcommon -std=gnu89"
 # MiniLibX paths
 MLX_DIR = minilibx-linux
 MLX_LIB = $(MLX_DIR)/libmlx.a

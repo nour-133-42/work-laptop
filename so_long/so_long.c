@@ -141,6 +141,8 @@ int	main(int argc, char *argv[])
 	if (init_mlx(&map_data))
 		return (0);
 	draw_window(&map_data);
+	// mlx_key_hook(map_data->win, key_hook, &map_data);
+	// mlx_hook(map_data->win, 17, 0, close_window, &map_data);
 	mlx_key_hook(map_data->win, key_hook, &map_data);
 	mlx_hook(map_data->win, 17, 0, close_window, &map_data);
 	mlx_loop(map_data->mlx);

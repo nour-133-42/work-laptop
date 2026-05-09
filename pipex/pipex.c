@@ -71,6 +71,7 @@ void	child_one(t_pipex *pipex, char **argv, char **envp)
 
 void	child_two(t_pipex *pipex, char **argv, char **envp)
 {
+	
 	int		outfile;
 	char	**paths;
 

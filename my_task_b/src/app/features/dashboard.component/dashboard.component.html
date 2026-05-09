@@ -1,0 +1,14 @@
+<div class="dashboard-root">
+    <header class="topbar">
+        <div class="brand">My App</div>
+        <div class="actions">
+            @if (username) { <span>Welcome, {{ username }}</span> }
+            <button (click)="logout()">Logout</button>
+        </div>
+    </header>
+
+    <main class="content">
+        <h1>Dashboard</h1>
+        <p>This is a simple dashboard. Add your widgets here.</p>
+    </main>
+</div>
