@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 11:59:34 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/01 19:45:17 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/12/06 18:45:30 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,13 @@ void	assien_the_target_node(t_list **current_a, t_list **current_b,
 	while ((*current_a))
 	{
 		if ((*current_a)->content > (*current_b)->content
-			&& (*current_b)->content < max->content)
+			&& (*current_a)->content <= max->content)
 		{
 			(*current_b)->target = (*current_a);
 			max = (*current_a);
 		}
+		(*current_a) = (*current_a)->next;
 	}
-	(*current_b) = (*current_b)->next;
 }
 
 void	assien_targets(t_list **a, t_list **b)
@@ -70,7 +70,8 @@ void	assien_targets(t_list **a, t_list **b)
 	max = find_max(*a);
 	while (current_b)
 	{
-		if (current_b == max)
+		current_a = *a;
+		if (current_b->content > max->content)
 			current_b->target = find_min(current_a);
 		else
 			assien_the_target_node(&current_a, &current_b, max);
@@ -99,6 +100,7 @@ void	assien_to_top_cost(t_list **lst)
 			current->to_top_cost = len - i;
 			current->chepest_rotation = 2;
 		}
+		i++;
 		current = current->next;
 	}
 }

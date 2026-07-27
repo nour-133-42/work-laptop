@@ -1,39 +1,62 @@
-# Source files
-SRCS = linked_list.c linked_list2.c \
-main.c \
-operations_utils.c operations_utils_2.c operations_utils_3.c operations_utils_4.c \
-push.c rotate.c r_rotate.c swap.c \
+# ===================== VARIABLES =====================
 
-# Object files
+CC      = cc
+CFLAGS  = -Wall -Wextra -Werror
+
+NAME        = push_swap
+NAME_BONUS  = checker
+
+
+
+# ===================== SOURCES =======================
+
+SRCS =  linked_list.c linked_list2.c \
+        main.c \
+        operations_utils.c operations_utils_2.c operations_utils_3.c \
+        operations_utils_4.c operations_utils_5.c \
+        push.c rotate.c r_rotate.c swap.c
+
+SRCS_BONUS = checker.c \
+             get_next_line/get_next_line.c \
+             get_next_line/get_next_line_utils.c \
+             push_bonus.c rotate_bonus.c r_rotate_bonus.c swap_bonus.c \
+             operations_utils.c operations_utils_2.c operations_utils_3.c \
+             operations_utils_4.c operations_utils_5.c \
+             linked_list.c linked_list2.c
+
+# ===================== OBJECTS =======================
+
 OBJS = $(SRCS:.c=.o)
 
-# Compiler and flags
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
+OBJS_BONUS = $(SRCS_BONUS:.c=.o)
 
-# Output library name
-NAME = libftpushswap.a
 
-# Default target
+# ===================== RULES =========================
+
 all: $(NAME)
 
-# Build the library
-$(NAME): $(OBJS)
-	ar rcs $(NAME) $(OBJS)
+bonus: $(NAME_BONUS)
 
-# Compile each .c into .o
+# ---------- push_swap ----------
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+
+# ---------- checker ----------
+$(NAME_BONUS): $(OBJS_BONUS)
+	$(CC) $(CFLAGS) $(OBJS_BONUS) -o $(NAME_BONUS)
+
+# ---------- object rules ----------
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Clean up object files
+# ===================== CLEAN =========================
+
 clean:
-	rm -f $(OBJS)
+	rm -rf $(OBJS_BONUS) $(OBJS)
 
-# Clean up everything
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME) $(NAME_BONUS)
 
-# Rebuild everything
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all bonus clean fclean re

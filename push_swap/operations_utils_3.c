@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 12:00:11 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/02 16:00:17 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/12/06 18:44:41 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,8 @@ void	assien_price(t_list **lst)
 	{
 		if (current->chepest_rotation == current->target->chepest_rotation)
 		{
-			current->price = current->to_top_cost
-				- current->target->to_top_cost;
-			if (current->price < 0)
-				current->price *= -1;
+			current->price = max(current->to_top_cost,
+					current->target->to_top_cost);
 		}
 		else
 			current->price = current->to_top_cost
@@ -55,7 +53,7 @@ void	preform_same_rotation(t_list **a, t_list **b, t_list *chepestnode,
 {
 	if (chepestnode->chepest_rotation == 1)
 	{
-		while (chepestnode != *b || chepestnode->target != *a)
+		while (chepestnode != *b && chepestnode->target != *a)
 			*i += rr(a, b);
 		if (chepestnode == *b)
 			while (chepestnode->target != *a)
@@ -66,7 +64,7 @@ void	preform_same_rotation(t_list **a, t_list **b, t_list *chepestnode,
 	}
 	else
 	{
-		while (chepestnode != *b || chepestnode->target != *a)
+		while (chepestnode != *b && chepestnode->target != *a)
 			*i += rrr(a, b);
 		if (chepestnode == *b)
 			while (chepestnode->target != *a)
@@ -95,7 +93,7 @@ int	execute_operations(t_list **a, t_list **b)
 	int		i;
 
 	i = 0;
-	while (b)
+	while (*b)
 	{
 		assien_targets(a, b);
 		assien_to_top_cost(a);

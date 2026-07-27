@@ -1,35 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   swap.c                                             :+:      :+:    :+:   */
+/*   r_rotate_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/20 15:22:41 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/06 18:44:29 by nalshmai         ###   ########.fr       */
+/*   Created: 2025/10/20 15:22:34 by nalshmai          #+#    #+#             */
+/*   Updated: 2025/12/18 10:18:02 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	sa(t_list **lst)
+int	rra(t_list **lst)
 {
-	swap_last_two(lst);
-	write(1, "sa\n", 3);
+	reverse_rotate_list(lst);
 	return (1);
 }
 
-int	sb(t_list **lst)
+int	rrb(t_list **lst)
 {
-	swap_last_two(lst);
-	write(1, "sb\n", 3);
+	reverse_rotate_list(lst);
 	return (1);
 }
 
-int	ss(t_list **lst1, t_list **lst2)
+int	rrr(t_list **lst1, t_list **lst2)
 {
-	swap_last_two(lst1);
-	swap_last_two(lst2);
-	write(1, "ss\n", 3);
+	reverse_rotate_list(lst1);
+	reverse_rotate_list(lst2);
 	return (1);
 }

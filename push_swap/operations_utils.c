@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 15:22:17 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/02 15:57:03 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/12/06 18:45:50 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,16 @@
 
 void	swap_last_two(t_list **lst)
 {
-	t_list	*current;
-	t_list	*second_last;
-	t_list	*last;
+	t_list	*first;
+	t_list	*second;
 
 	if (!lst || !*lst || !(*lst)->next)
 		return ;
-	current = *lst;
-	while (current->next->next->next)
-		current = current->next;
-	second_last = current->next;
-	last = second_last->next;
-	second_last->next = NULL;
-	last->next = second_last;
-	current->next = last;
+	first = *lst;
+	second = first->next;
+	first->next = second->next;
+	second->next = first;
+	*lst = second;
 }
 
 void	push_last_to_last(t_list **lst1, t_list **lst2)
@@ -37,16 +33,9 @@ void	push_last_to_last(t_list **lst1, t_list **lst2)
 	if (!lst1 || !*lst1 || !lst2)
 		return ;
 	cur = *lst1;
-	if (!cur->next)
-	{
-		*lst1 = NULL;
-		ft_lstadd_back(lst2, cur);
-		return ;
-	}
-	while (cur->next->next)
-		cur = cur->next;
-	ft_lstadd_back(lst2, cur->next);
+	*lst1 = cur->next;
 	cur->next = NULL;
+	ft_lstadd_front(lst2, cur);
 }
 
 void	rotate_list(t_list **lst)
@@ -67,19 +56,19 @@ void	rotate_list(t_list **lst)
 
 void	reverse_rotate_list(t_list **lst)
 {
-	t_list	*prev;
+	t_list	*second_last;
 	t_list	*last;
 
 	if (!lst || !*lst || !(*lst)->next)
 		return ;
-	prev = NULL;
+	second_last = NULL;
 	last = *lst;
 	while (last->next)
 	{
-		prev = last;
+		second_last = last;
 		last = last->next;
 	}
-	prev->next = NULL;
+	second_last->next = NULL;
 	last->next = *lst;
 	*lst = last;
 }

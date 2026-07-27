@@ -6,17 +6,18 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 19:42:05 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/12/02 16:01:34 by nalshmai         ###   ########.fr       */
+/*   Updated: 2025/12/18 10:01:11 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "get_next_line/get_next_line.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 typedef struct s_list
 {
-	long			content;
+	long long		content;
 	struct s_list	*next;
 	struct s_list	*target;
 	int				to_top_cost;
@@ -26,7 +27,14 @@ typedef struct s_list
 	int				chepest_rotation;
 }					t_list;
 
-t_list				*ft_lstnew(long data);
+t_list				*ft_lstnew(long long data);
+size_t				ft_strlen(const char *s);
+long long			ft_atoi(const char *nptr);
+void				free_list(t_list *head);
+int					check_max_int(int argc, char *argv[]);
+int					check_dublicates(int argc, char **argv);
+int					check_not_int(char **argv);
+int					max(int a, int b);
 void				ft_lstadd_back(t_list **lst, t_list *new);
 void				swap_last_two(t_list **lst);
 void				push_last_to_last(t_list **lst1, t_list **lst2);
@@ -59,3 +67,7 @@ int					preform_different_rotation(t_list **a, t_list **b,
 						t_list *chepestnode);
 int					execute_operations(t_list **a, t_list **b);
 int					if_sorted_2(t_list *a);
+void				sort_two(t_list **a);
+
+void				sort_three(t_list **a);
+void				sort_final(t_list **a);
