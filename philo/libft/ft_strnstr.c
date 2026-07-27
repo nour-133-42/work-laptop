@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 18:23:11 by nalshmai          #+#    #+#             */
-/*   Updated: 2025/08/14 07:13:24 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/07/27 16:37:12 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 	return (NULL);
 }
 
-#include <stdio.h>
-#include <unistd.h>
+// #include <stdio.h>
+// #include <unistd.h>
 
-int	main(void)
-{
-	char *i = ft_strnstr("aaabcabcd", "abcab", 6);
-	printf("%s", i);
-}
+// int	main(void)
+// {
+// 	char *i = ft_strnstr("aaabcabcd", "abcab", 6);
+// 	printf("%s", i);
+// }

@@ -6,7 +6,7 @@
 /*   By: nalshmai <nalshmai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 16:47:19 by nalshmai          #+#    #+#             */
-/*   Updated: 2026/06/18 17:58:35 by nalshmai         ###   ########.fr       */
+/*   Updated: 2026/07/22 16:48:59 by nalshmai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,7 @@
 # include <sys/time.h>
 # include <unistd.h>
 
-typedef struct s_data
-{
-	int				nb_philo;
-	long			time_die;
-	long			time_eat;
-	long			time_sleep;
-	long			meals_required;
-
-	int				stop;
-
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	print_mutex;
-
-	t_philo			*philos;
-}					t_data;
+// typedef struct s_philo	t_philo;
 typedef struct s_philo
 {
 	int				id;
@@ -50,10 +36,24 @@ typedef struct s_philo
 	struct s_data	*data;
 	pthread_mutex_t	meal_mutex;
 }					t_philo;
-typedef struct s_pthread
+typedef struct s_data
 {
-	pthread_t		thread;
-}					t_pthred;
+	int				nb_philo;
+	long			time_die;
+	long			time_eat;
+	long			time_sleep;
+	long			meals_required;
+
+	int				stop;
+	long			start_time;
+
+	pthread_t		monitor;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	stop_mutex;
+
+	t_philo			*philos;
+}					t_data;
 
 int					ft_atoi(const char *nptr);
 
