@@ -40,6 +40,12 @@ typedef struct s_data
 	long			time_sleep;
 	long			meals_required;
 	int				stop;
+	int				threads_created;
+	int				monitor_created;
+	int				forks_initialized;
+	int				print_mutex_initialized;
+	int				stop_mutex_initialized;
+	int				meal_mutexes_initialized;
 	long			start_time;
 	pthread_t		monitor;
 	pthread_mutex_t	*forks;

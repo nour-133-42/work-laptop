@@ -24,11 +24,14 @@ int	creat_mutexes(t_data *data)
 	{
 		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
 			return (1);
+		data->forks_initialized++;
 	}
 	if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
 		return (1);
+	data->print_mutex_initialized = 1;
 	if (pthread_mutex_init(&data->stop_mutex, NULL) != 0)
 		return (1);
+	data->stop_mutex_initialized = 1;
 	return (0);
 }
 
@@ -48,7 +51,9 @@ int	creat_philos(t_data *data)
 		data->philos[i].left_fork = &data->forks[i];
 		data->philos[i].right_fork = &data->forks[(i + 1) % data->nb_philo];
 		data->philos[i].data = data;
-		pthread_mutex_init(&data->philos[i].meal_mutex, NULL);
+		if (pthread_mutex_init(&data->philos[i].meal_mutex, NULL) != 0)
+			return (1);
+		data->meal_mutexes_initialized++;
 	}
 	return (0);
 }

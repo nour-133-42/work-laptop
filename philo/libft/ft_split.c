@@ -38,11 +38,9 @@ static char	*ft_strchr_me(const char *s, int c)
 static size_t	count_word(char *x, char c)
 {
 	int		e;
-	int		h;
 	char	*w;
 
 	e = 0;
-	h = 0;
 	w = x;
 	if (!x)
 		return (0);
@@ -50,7 +48,6 @@ static size_t	count_word(char *x, char c)
 		return (0);
 	while (ft_strchr_me(w, c) && c)
 	{
-		h++;
 		while (*w == c)
 			w++;
 		if (*w)
