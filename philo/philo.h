@@ -61,6 +61,9 @@ int		creat_philos(t_data *data);
 long	get_current_time(void);
 void	usleep_smart(t_data *data, long usec);
 int		simulation_stopped(t_data *data);
+void	request_stop(t_data *data);
+int		philo_is_full(t_data *data, int i);
+void	init_meal_times(t_data *data);
 void	print_action(t_philo *philo, const char *action);
 void	take_forks(t_philo *philo);
 void	drop_forks(t_philo *philo);
@@ -69,6 +72,7 @@ void	sleep_philo(t_philo *philo);
 void	think(t_philo *philo);
 void	*philosopher_routine(void *arg);
 void	*monitor_routine(void *arg);
+int		create_philo_threads(t_data *data);
 int		start_simulation(t_data *data);
 void	cleanup(t_data *data);
 

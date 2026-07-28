@@ -12,18 +12,6 @@
 
 #include "philo.h"
 
-static void	request_stop(t_data *data)
-{
-	if (!data->stop_mutex_initialized)
-	{
-		data->stop = 1;
-		return ;
-	}
-	pthread_mutex_lock(&data->stop_mutex);
-	data->stop = 1;
-	pthread_mutex_unlock(&data->stop_mutex);
-}
-
 int	validate_arguments(int argc, char **argv)
 {
 	int	i;
@@ -65,51 +53,6 @@ int	parsarguments(int argc, char **argv, t_data *data)
 	return (0);
 }
 
-static int	create_philosopher_threads(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->nb_philo)
-	{
-		if (pthread_create(&data->philos[i].thread, NULL, philosopher_routine,
-				&data->philos[i]) != 0)
-		{
-			printf("Error: Failed to create philosopher thread.\n");
-			request_stop(data);
-			return (1);
-		}
-		data->threads_created++;
-		i++;
-	}
-	return (0);
-}
-
-static int	create_monitor_thread(t_data *data)
-{
-	if (pthread_create(&data->monitor, NULL, monitor_routine, data) != 0)
-	{
-		printf("Error: Failed to create monitor thread.\n");
-		request_stop(data);
-		return (1);
-	}
-	data->monitor_created = 1;
-	return (0);
-}
-
-int	start_simulation(t_data *data)
-{
-	int	i;
-
-	data->start_time = get_current_time();
-	i = -1;
-	while (++i < data->nb_philo)
-		data->philos[i].last_meal = data->start_time;
-	if (create_philosopher_threads(data) != 0)
-		return (1);
-	return (create_monitor_thread(data));
-}
-
 void	cleanup(t_data *data)
 {
 	int	i;
@@ -133,12 +76,6 @@ void	cleanup(t_data *data)
 	free(data->philos);
 }
 
-static int	cleanup_error(t_data *data)
-{
-	cleanup(data);
-	return (1);
-}
-
 int	main(int argc, char **argv)
 {
 	t_data	data;
@@ -149,11 +86,11 @@ int	main(int argc, char **argv)
 	if (parsarguments(argc, argv, &data) != 0)
 		return (1);
 	if (creat_mutexes(&data) != 0)
-		return (cleanup_error(&data));
+		return (cleanup(&data), 1);
 	if (creat_philos(&data) != 0)
-		return (cleanup_error(&data));
+		return (cleanup(&data), 1);
 	if (start_simulation(&data) != 0)
-		return (cleanup_error(&data));
+		return (cleanup(&data), 1);
 	cleanup(&data);
 	return (0);
 }

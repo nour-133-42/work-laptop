@@ -54,5 +54,10 @@ void	sleep_philo(t_philo *philo)
 
 void	think(t_philo *philo)
 {
+	long	delay;
+
 	print_action(philo, "is thinking");
+	delay = (philo->data->time_eat * 2) - philo->data->time_sleep;
+	if (philo->data->nb_philo % 2 != 0 && delay > 0)
+		usleep_smart(philo->data, delay * 1000);
 }

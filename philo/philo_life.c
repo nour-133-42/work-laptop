@@ -45,18 +45,6 @@ static int	all_full_stop(t_data *d, int all_full)
 	return (0);
 }
 
-static int	philo_is_full(t_data *d, int i)
-{
-	int	is_full;
-
-	if (d->meals_required == -1)
-		return (0);
-	pthread_mutex_lock(&d->philos[i].meal_mutex);
-	is_full = (d->philos[i].meals_eaten >= d->meals_required);
-	pthread_mutex_unlock(&d->philos[i].meal_mutex);
-	return (is_full);
-}
-
 void	*philosopher_routine(void *arg)
 {
 	t_philo	*philo;

@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -Werror
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-SRC = philo.c philo_init.c philo_utils.c philo_meal.c philo_life.c
+SRC = philo.c philo_init.c philo_utils.c philo_meal.c philo_life.c philo_sim.c
 OBJ = $(SRC:.c=.o)
 
 INCLUDES = -I$(LIBFT_DIR) -I.
